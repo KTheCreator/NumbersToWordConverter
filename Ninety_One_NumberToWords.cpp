@@ -53,12 +53,107 @@ string removeLeadingZeros(string uInput) {
     temp.erase(0, zeroCount);
     return temp;
 }
+string formatPrinting(vector<string> input, int size) {
+    string stemplate;
+    if (size == 1) {
+        return input[0];
+    }
+    else if (size == 2) {
+        stemplate = input[0] + " thousand, " + input[1];
+    }
+    else if (size == 3) {
+        if (input[1] == "$")
+            stemplate = input[0] + " million and " + input[2];
+        else if (input[2] == "$")
+            stemplate = input[0] + "million and " + input[1] + "thousand";
+        
+    }
+        
+    return stemplate;
+}
+vector<string> numberToWordsMachine(vector<string> input,int _noOfSets) {
+    unordered_map<int, string>numberToWordMap = {
+          {1,"One"},{2,"Two"},{3,"Three"},{4,"Four"},{5,"Five"},{6,"Six"},{7,"Seven"},{8,"Eight"},{9,"Nine"},{0,"and"},
+          {10,"Ten"},{11,"Eleven"},{12,"Twelve"},{13,"Thirteen"},{14,"Fourteen"},{15,"Fifteen"},{16,"Sixteen"},{17,"Seventeen"},{18,"Eighteen"},{19,"Nineteen"},
+          {20,"Twenty"},{30,"Thirty"},{40,"Forty"},{50,"Fifty"},{60,"Sixty"},{70,"Seventy"},{80,"Eighty"},{90,"Ninety"}
+
+    };
+    vector<string>temp(_noOfSets);
+    for (int i = 0; i < _noOfSets; i++) {
+        
+        if (input[i].size() == 3) {
+            if (input[i][0] == '0') {
+                if (input[i][1] == '0' && input[i][2] == '0') {
+
+                    temp[i] += "$";
+                    continue;
+                }
+
+            }
+            int hundreds = converter(input[i][0]); //Gets the 100s
+            int tens = converter(input[i][1]);//Gets the 10s
+            int units = converter(input[i][2]);//Gets the 1s
+
+            temp[i] += numberToWordMap.at(hundreds) + " hundred";
+            if (tens == 0 && units == 0) continue;
+            else {
+
+                temp[i] += " and ";
+                if (tens != 0) {
+                    if (tens == 1) {
+                        int newDigit = (tens * 10) + units;
+
+                        temp[i] += numberToWordMap.at(newDigit);
+                    }
+                    else {
+
+                        temp[i] += numberToWordMap.at(tens * 10) + numberToWordMap.at(units);;
+
+
+                    }
+
+                }
+                else {
+                    if (units != 0)
+                        temp[i] += numberToWordMap.at(units);
+
+
+                }
+            }
+
+
+        }
+        else if (input[i].size() == 2) {
+            int tens = converter(input[i][0]);//Gets the 10s
+            int units = converter(input[i][1]);//Gets the 1s
+            if (tens != 0) {
+                if (tens == 1) {
+                    int newDigit = (tens * 10) + units;
+
+                    temp[i] += numberToWordMap.at(newDigit);
+                }
+                else {
+
+                    temp[i] += numberToWordMap.at(tens * 10) + numberToWordMap.at(units);
+                }
+
+            }
+
+        }
+        else if (input[i].size() == 1) {
+            int units = converter(input[i][0]);//Gets the 1s
+
+            temp[i] += numberToWordMap.at(units);
+        }
+    }
+    return temp;
+}
 
 int main()
 {
     
     string convertingDigit = "";
-    string line = "The pump is 1111536 deep underground";
+    string line = "The pump is 1000536 deep underground";
     //Step 1: Tokenise the input.
     vector<string>newInput = tokenise(line);
     /*for (int i = 0; i < newInput.size(); i++)
@@ -111,75 +206,21 @@ int main()
     }
     else numberInSets[0] = convertingDigit;
 
-    
-    
-    
-    
-
-
     //Step 6: Create a map that has contains all the unique instances/combos of numbers.
-    unordered_map<int, string>numberToWordMap = {
-           {1,"One"},{2,"Two"},{3,"Three"},{4,"Four"},{5,"Five"},{6,"Six"},{7,"Seven"},{8,"Eight"},{9,"Nine"},{0,"and"},
-           {10,"Ten"},{11,"Eleven"},{12,"Twelve"},{13,"Thirteen"},{14,"Fourteen"},{15,"Fifteen"},{16,"Sixteen"},{17,"Seventeen"},{18,"Eighteen"},{19,"Nineteen"},
-           {20,"Twenty"},{30,"Thirty"},{40,"Forty"},{50,"Fifty"},{60,"Sixty"},{70,"Seventy"},{80,"Eighty"},{90,"Ninety"}
-
-    };
+   
     // Step 7: Uses the map to return a 2D vector of the numbers converted to words
-    vector<vector<const char*>> ans(numberOfSubSets);
+    
+    vector<string> ans(numberOfSubSets);
     //constructing the ans vector to have the same number of digits
+    ans = numberToWordsMachine(numberInSets, numberOfSubSets);
     
-    for (int i = 0; i < numberOfSubSets; i++) {
-        if (numberInSets[i].size() == 3) {
-            int hundreds = converter(numberInSets[i][0]); //Gets the 100s
-            int tens = converter(numberInSets[i][1]);//Gets the 10s
-            int units = converter(numberInSets[i][2]);//Gets the 1s
-            ans[i].push_back(numberToWordMap.at(hundreds).c_str());
-            if (tens != 0) {
-                if (tens == 1) {
-                    int newDigit = (tens * 10) + units;
-                    ans[i].push_back(numberToWordMap.at(newDigit).c_str());
-                }
-                else {
-                    ans[i].push_back(numberToWordMap.at(tens * 10).c_str());
-                    ans[i].push_back(numberToWordMap.at(units).c_str());
-                }
 
-            }
-            else { 
-                if(units != 0)
-                ans[i].push_back(numberToWordMap.at(units).c_str());
-            }
-        }
-        else if (numberInSets[i].size() == 2) {
-            int tens = converter(numberInSets[i][0]);//Gets the 10s
-            int units = converter(numberInSets[i][1]);//Gets the 1s
-            if (tens != 0) {
-                if (tens == 1) {
-                    int newDigit = (tens * 10) + units;
-                    ans[i].push_back(numberToWordMap.at(newDigit).c_str());
-                }
-                else {
-                    ans[i].push_back(numberToWordMap.at(tens * 10).c_str());
-                    ans[i].push_back(numberToWordMap.at(units).c_str());
-                }
-
-            }
-            else {
-                
-            }
-        }
-        else if (numberInSets[i].size() == 1) {
-            int units = converter(numberInSets[i][0]);//Gets the 1s
-            ans[i].push_back(numberToWordMap.at(units).c_str());
-        }
-    }
+    string finalOut = formatPrinting(ans, numberOfSubSets);
+    cout << finalOut << endl;
     
-    for (int i = 0; i < numberOfSubSets; i++) {
-        for (int j = 0; j < ans[i].size(); j++) {
-            cout << ans[i][j] << " ";
-        }
-        cout << endl;
-    }
+
+    
+    
 }
 
 
