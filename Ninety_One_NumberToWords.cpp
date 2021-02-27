@@ -279,10 +279,15 @@ string numberToWordProcess(string input) {
             if (final == -1) return "Invalid Input! No Digit Detected!\n";
             else return "Invalid Input! Multiple Digits Detected!\n";
         }
-        //Step 3: See if the number begins with 0 i.e. 000001 is 1;
+
+        
+        
+        //Removes any leading zeros i.e. 0001 becomes 1.
         if (convertingDigit[0] == '0') {
             convertingDigit = removeLeadingZeros(convertingDigit);
         }
+
+        //Checks if the digit has any commas in the format. And Removes them before they are processed.
         int cPRESENT = commasPresent(convertingDigit);
         if (cPRESENT == 1) {
             convertingDigit = removeCommas(convertingDigit);
@@ -290,8 +295,10 @@ string numberToWordProcess(string input) {
         else if (cPRESENT == -2) {
             return "Invalid Input! Commas placed in the wrong place!";
         }
+        //Limits the number to only 15 digits max or into the trillion range.
+        if (convertingDigit.length() > 15) return "Invalid Number! Digit is out of Range!";
 
-        //Step 4: Place spaces inbetween the certain digits for tokenisation process i.e. 1115631 is 1 115 631
+        //Place spaces inbetween the certain digits for tokenisation process i.e. 1115631 is 1 115 631
         int numberOfSubSets = 1;
         if (convertingDigit.length() > 3) {
             int digitRange;
@@ -302,6 +309,7 @@ string numberToWordProcess(string input) {
                 digitRange = convertingDigit.length() + (convertingDigit.length() / 3) - 1;
             int spaceCounter = 1; int oldWordCon = convertingDigit.length() - 1;
 
+            //Iterates and populates the vector backwards placing a space every fourth spot.
             vector<char>test(digitRange);
             for (int i = digitRange - 1; i > -1; i--) {
                 if (spaceCounter % 4 != 0) {
