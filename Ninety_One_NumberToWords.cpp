@@ -104,7 +104,7 @@ string formatPrinting(vector<string> input, int size) {
     }
     else if (size == 2) {
         if (input[1] == "$")stemplate = input[0] + " thousand";
-        else stemplate = input[0] + " thousand, " + input[1];
+        else stemplate = input[0] + " thousand and " + input[1];
 
     }
     else if (size == 3) {
@@ -114,7 +114,7 @@ string formatPrinting(vector<string> input, int size) {
         else if (input[2] == "$")
             stemplate = input[0] + " million and " + input[1] + " thousand";
         else
-            stemplate = input[0] + "million, " + input[1] + " thousand, " + input[2];
+            stemplate = input[0] + "million, " + input[1] + " thousand and " + input[2];
 
     }
     else if (size == 4) {
@@ -130,7 +130,7 @@ string formatPrinting(vector<string> input, int size) {
             if (input[3] == "$") {
                 stemplate = input[0] + " billion and " + input[1] + " million";
             }
-            else stemplate = input[0] + " billion, " + input[1] + " million and" + input[3];
+            else stemplate = input[0] + " billion, " + input[1] + " million and " + input[3];
         }
         else if (input[3] == "$") {
             stemplate = input[0] + " billion, " + input[1] + " million and " + input[2];
@@ -174,44 +174,47 @@ vector<string> numberToWordsMachine(vector<string> input, int _noOfSets) {
     for (int i = 0; i < _noOfSets; i++) {
 
         if (input[i].size() == 3) {
-            if (input[i][0] == '0') {
-                if (input[i][1] == '0' && input[i][2] == '0') {
-
-                    temp[i] += "$";
-                    continue;
-                }
-
+            
+            if (input[i][0] == '0' && input[i][1] == '0' && input[i][2] == '0') {
+                temp[i] += "$"; continue;
             }
-            int hundreds = converter(input[i][0]); //Gets the 100s
-            int tens = converter(input[i][1]);//Gets the 10s
-            int units = converter(input[i][2]);//Gets the 1s
-
-            temp[i] += numberToWordMap.at(hundreds) + " hundred";
-            if (tens == 0 && units == 0) continue;
             else {
+                int hundreds = converter(input[i][0]); //Gets the 100s
+                int tens = converter(input[i][1]);//Gets the 10s
+                int units = converter(input[i][2]);//Gets the 1s
 
-                temp[i] += " and ";
-                if (tens != 0) {
+                if (hundreds == 0) {
+                    if (tens == 0) {
+                        temp[i] += numberToWordMap.at(units);
+                    }
+                    else if (units == 0) temp[i] += numberToWordMap.at(tens*10);
+                    else {
+                        if (tens == 1) {
+                            int newDigit = (tens * 10) + units;
+                            temp[i] += numberToWordMap.at(newDigit);
+                        }
+                        else {
+                            temp[i] += numberToWordMap.at(tens * 10) + "-" + numberToWordMap.at(units);
+                        }
+                    }
+                }
+                else if (tens == 0) {
+                    if(units == 0) temp[i] += numberToWordMap.at(hundreds) + " hundred";
+                    else temp[i] += numberToWordMap.at(hundreds) + " hundred" + "and"+numberToWordMap.at(units);
+                }
+                else if(units ==0) numberToWordMap.at(hundreds) + " hundred and " + numberToWordMap.at(tens*10);
+                else {
                     if (tens == 1) {
                         int newDigit = (tens * 10) + units;
-
-                        temp[i] += numberToWordMap.at(newDigit);
+                        temp[i] += numberToWordMap.at(hundreds)+" hundred and "+numberToWordMap.at(newDigit);
                     }
                     else {
-
-                        temp[i] += numberToWordMap.at(tens * 10) + "-" + numberToWordMap.at(units);
-
-
+                        temp[i] += numberToWordMap.at(hundreds) + " hundred and "+numberToWordMap.at(tens * 10) + "-" + numberToWordMap.at(units);
                     }
-
-                }
-                else {
-                    if (units != 0)
-                        temp[i] += numberToWordMap.at(units);
-
 
                 }
             }
+
         }
         else if (input[i].size() == 2) {
             int tens = converter(input[i][0]);//Gets the 10s
@@ -359,16 +362,20 @@ string numberToWordProcess(string input) {
 int main()
 {
 
+
     bool running = true;
     while (running) {
         int userType;
         cout << "Main Menu:\n  (1)Using your own sentence/input\n  (2)Import sentences from a text file\n Which One? ";
-        cin >> userType;
+        cin >> userType; cin.get();
         if (userType == 1) {//Own input
             string userInput;
+            
             cout << "Enter your sentence: ";
-            cin >> userInput;
+            
+            getline(cin, userInput);
             cout << numberToWordProcess(userInput);
+            
             running = false;
         }
         else if (userType == 2) {//Text file input
