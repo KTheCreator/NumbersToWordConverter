@@ -1,14 +1,4 @@
-// Ninety_One_NumberToWords.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-#include <vector>
-#include <iostream>
-#include <fstream>
-#include <cstring>
-#include <string>
-#include <unordered_map>
-#include <algorithm>
-using namespace std;
-
+#include "numberToWordsProgram.h"
 vector<string> tokenise(string uInput) {
     /*
     * Purpose: Takes a given sequence, separates the sequence into a vector and returns
@@ -174,7 +164,7 @@ vector<string> numberToWordsMachine(vector<string> input, int _noOfSets) {
     for (int i = 0; i < _noOfSets; i++) {
 
         if (input[i].size() == 3) {
-            
+
             if (input[i][0] == '0' && input[i][1] == '0' && input[i][2] == '0') {
                 temp[i] += "$"; continue;
             }
@@ -187,7 +177,7 @@ vector<string> numberToWordsMachine(vector<string> input, int _noOfSets) {
                     if (tens == 0) {
                         temp[i] += numberToWordMap.at(units);
                     }
-                    else if (units == 0) temp[i] += numberToWordMap.at(tens*10);
+                    else if (units == 0) temp[i] += numberToWordMap.at(tens * 10);
                     else {
                         if (tens == 1) {
                             int newDigit = (tens * 10) + units;
@@ -199,17 +189,17 @@ vector<string> numberToWordsMachine(vector<string> input, int _noOfSets) {
                     }
                 }
                 else if (tens == 0) {
-                    if(units == 0) temp[i] += numberToWordMap.at(hundreds) + " hundred";
-                    else temp[i] += numberToWordMap.at(hundreds) + " hundred" + "and"+numberToWordMap.at(units);
+                    if (units == 0) temp[i] += numberToWordMap.at(hundreds) + " hundred";
+                    else temp[i] += numberToWordMap.at(hundreds) + " hundred" + "and" + numberToWordMap.at(units);
                 }
-                else if(units ==0) numberToWordMap.at(hundreds) + " hundred and " + numberToWordMap.at(tens*10);
+                else if (units == 0) numberToWordMap.at(hundreds) + " hundred and " + numberToWordMap.at(tens * 10);
                 else {
                     if (tens == 1) {
                         int newDigit = (tens * 10) + units;
-                        temp[i] += numberToWordMap.at(hundreds)+" hundred and "+numberToWordMap.at(newDigit);
+                        temp[i] += numberToWordMap.at(hundreds) + " hundred and " + numberToWordMap.at(newDigit);
                     }
                     else {
-                        temp[i] += numberToWordMap.at(hundreds) + " hundred and "+numberToWordMap.at(tens * 10) + "-" + numberToWordMap.at(units);
+                        temp[i] += numberToWordMap.at(hundreds) + " hundred and " + numberToWordMap.at(tens * 10) + "-" + numberToWordMap.at(units);
                     }
 
                 }
@@ -283,8 +273,8 @@ string numberToWordProcess(string input) {
             else return "Invalid Input! Multiple Digits Detected!\n";
         }
 
-        
-        
+
+
         //Removes any leading zeros i.e. 0001 becomes 1.
         if (convertingDigit[0] == '0') {
             convertingDigit = removeLeadingZeros(convertingDigit);
@@ -359,10 +349,7 @@ string numberToWordProcess(string input) {
         return "Invalid Input: No Sentence Detected\n";
 
 }
-int main()
-{
-
-
+void runProgram() {
     bool running = true;
     while (running) {
         int userType;
@@ -370,12 +357,12 @@ int main()
         cin >> userType; cin.get();
         if (userType == 1) {//Own input
             string userInput;
-            
+
             cout << "Enter your sentence: ";
-            
+
             getline(cin, userInput);
             cout << numberToWordProcess(userInput);
-            
+
             running = false;
         }
         else if (userType == 2) {//Text file input
@@ -398,7 +385,7 @@ int main()
             if (userAnswer == "N" || userAnswer == "n") {
 
                 cout << "Closing Application GoodBye!" << endl;
-                return 0;
+                return;
             }
             else if (userAnswer == "Y" || userAnswer == "y") {
                 cout << "Loading up Again...\n********************************************" << endl;
@@ -409,9 +396,4 @@ int main()
         }
 
     }
-
-
-
 }
-
-
