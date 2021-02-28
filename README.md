@@ -4,12 +4,12 @@ This solution utilises the concept of the "tokenising" a sequence of strings hea
 process is as followed
 
 Process:
-[1]Takes the sentence and separates each word into a vector
-[2]Iterates vector to get number in the sentence
-[3]Formats the number to be ready for conversion
-[4]Iterates over number and converts each number to there respective word counterparts
-[5]Formats the new converted digits into a desired output
-[6]Returns the final form of the string
+1) Takes the sentence and separates each word into a vector
+2) Iterates vector to get number in the sentence
+3) Formats the number to be ready for conversion
+4) Iterates over number and converts each number to there respective word counterparts
+5) Formats the new converted digits into a desired output
+6) Returns the final form of the string
 
 Design Choices:
 - A lot of the program is separated into functions to allow for ease of maintenance. Each function is 
