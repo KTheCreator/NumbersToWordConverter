@@ -42,3 +42,9 @@ Instructions:
 
 To use TextFile:
 Place the .txt in the same directory as the .cpp and .h
+
+####################################################################################################################################################
+Update(06/03/2021):
+
+- An executable version of the solution exist in the new version folder with the most up to date build of the code. 
+- New versions of the .cpp and .h is also available in the folder.
