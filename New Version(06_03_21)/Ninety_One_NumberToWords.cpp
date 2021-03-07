@@ -37,7 +37,8 @@ bool isNumber(string x) {
     * Purpose: Checks if the given string is a number.
     */
     for (int i = 0; i < x.length(); i++) {
-        if (x[i] == ',') continue;//Allows for commas to be present in the string and classes it as a number
+        if (i == 0 && x[i] == '-') continue;
+        else if (x[i] == ',') continue;//Allows for commas to be present in the string and classes it as a number
         else if (!isdigit(x[i])) return false;
     }
     return true;
@@ -92,66 +93,68 @@ string removeLeadingZeros(string uInput) {
 }
 string formatPrinting(vector<string> input, int size) {
     string stemplate;
+    
+    if (isNegative) stemplate += "Minus ";
     if (size == 1) {
-        return input[0];
+        return stemplate +=input[0];
     }
     else if (size == 2) {
         if (input[1] == "$")stemplate = input[0] + " thousand";
-        else stemplate = input[0] + " thousand, " + input[1];
+        else stemplate += input[0] + " thousand, " + input[1];
 
     }
     else if (size == 3) {
         if (input[1] == "$" && input[2] == "$") stemplate = input[0] + "million";
         else if (input[1] == "$")
-            stemplate = input[0] + " million and " + input[2];
+            stemplate += input[0] + " million and " + input[2];
         else if (input[2] == "$")
-            stemplate = input[0] + " million and " + input[1] + " thousand";
+            stemplate += input[0] + " million and " + input[1] + " thousand";
         else
-            stemplate = input[0] + "million, " + input[1] + " thousand and " + input[2];
+            stemplate += input[0] + "million, " + input[1] + " thousand and " + input[2];
 
     }
     else if (size == 4) {
         if (input[1] == "$" && input[2] == "$" && input[3] == "$") stemplate = input[0] + " billion";
         else if (input[1] == "$") {
             if (input[2] == "$")
-                stemplate = input[0] + " billion and " + input[3];
+                stemplate += input[0] + " billion and " + input[3];
             else if (input[3] == "$")
-                stemplate = input[0] + " billion and" + input[2] + " thousand";
-            else stemplate = input[0] + " billion, " + input[2] + "thousand and " + input[3];
+                stemplate += input[0] + " billion and" + input[2] + " thousand";
+            else stemplate += input[0] + " billion, " + input[2] + "thousand and " + input[3];
         }
         else if (input[2] == "$") {
             if (input[3] == "$") {
-                stemplate = input[0] + " billion and " + input[1] + " million";
+                stemplate += input[0] + " billion and " + input[1] + " million";
             }
-            else stemplate = input[0] + " billion, " + input[1] + " million and " + input[3];
+            else stemplate += input[0] + " billion, " + input[1] + " million and " + input[3];
         }
         else if (input[3] == "$") {
-            stemplate = input[0] + " billion, " + input[1] + " million and " + input[2];
+            stemplate += input[0] + " billion, " + input[1] + " million and " + input[2];
         }
-        else stemplate = input[0] + " billion, " + input[1] + " million, " + input[2] + " thousand and " + input[3];
+        else stemplate += input[0] + " billion, " + input[1] + " million, " + input[2] + " thousand and " + input[3];
     }
     else if (size == 5) {
-        if (input[1] == "$" && input[2] == "$" && input[3] == "$" && input[4] == "$") stemplate = input[0] + " trillion";
+        if (input[1] == "$" && input[2] == "$" && input[3] == "$" && input[4] == "$") stemplate += input[0] + " trillion";
         else if (input[1] == "$") {
-            if (input[2] == "$" && input[3] == "$") stemplate = input[0] + " trillion and " + input[4];
-            else if (input[4] == "$") stemplate = input[0] + " trillion, " + input[2] + " million and " + input[3] + "thousand";
-            else if (input[3] == "$") stemplate = input[0] + " trillion, " + input[2] + " million and " + input[4];
-            else if (input[2] == "$") stemplate = input[0] + " trillion, " + input[3] + " thousand and " + input[4];
-            else stemplate = input[0] + " trillion, " + input[2] + " million, " + input[3] + "thousand and " + input[4];
+            if (input[2] == "$" && input[3] == "$") stemplate += input[0] + " trillion and " + input[4];
+            else if (input[4] == "$") stemplate += input[0] + " trillion, " + input[2] + " million and " + input[3] + "thousand";
+            else if (input[3] == "$") stemplate += input[0] + " trillion, " + input[2] + " million and " + input[4];
+            else if (input[2] == "$") stemplate += input[0] + " trillion, " + input[3] + " thousand and " + input[4];
+            else stemplate += input[0] + " trillion, " + input[2] + " million, " + input[3] + "thousand and " + input[4];
 
         }
         else if (input[2] == "$") {
-            if (input[3] == "$" && input[4] == "$") stemplate = input[0] + " trillion and " + input[1] + " billion";
-            else if (input[4] == "$")stemplate = input[0] + " trillion, " + input[1] + " billion and " + input[3] + " thosuand";
-            else if (input[3] == "$")stemplate = input[0] + " trillion, " + input[1] + " billion and " + input[4];
-            else stemplate = input[0] + " trillion, " + input[1] + " billion, " + input[3] + " thousand and " + input[4];
+            if (input[3] == "$" && input[4] == "$") stemplate += input[0] + " trillion and " + input[1] + " billion";
+            else if (input[4] == "$")stemplate += input[0] + " trillion, " + input[1] + " billion and " + input[3] + " thosuand";
+            else if (input[3] == "$")stemplate += input[0] + " trillion, " + input[1] + " billion and " + input[4];
+            else stemplate += input[0] + " trillion, " + input[1] + " billion, " + input[3] + " thousand and " + input[4];
         }
         else if (input[3] == "$") {
-            if (input[4] == "$") stemplate = input[0] + " trillion, " + input[1] + " billion and " + input[2] + "million";
-            else stemplate = input[0] + " trillion, " + input[1] + " billion, " + input[2] + " million and " + input[4];
+            if (input[4] == "$") stemplate += input[0] + " trillion, " + input[1] + " billion and " + input[2] + "million";
+            else stemplate += input[0] + " trillion, " + input[1] + " billion, " + input[2] + " million and " + input[4];
         }
-        else if (input[4] == "$")stemplate = input[0] + " trillion, " + input[1] + " billion, " + input[2] + " million and " + input[3] + " thousand";
-        else stemplate = input[0] + " trillion, " + input[1] + " billion, " + input[2] + " million, " + input[3] + " thousand and " + input[4];
+        else if (input[4] == "$")stemplate += input[0] + " trillion, " + input[1] + " billion, " + input[2] + " million and " + input[3] + " thousand";
+        else stemplate += input[0] + " trillion, " + input[1] + " billion, " + input[2] + " million, " + input[3] + " thousand and " + input[4];
     }
 
     return stemplate;
@@ -200,7 +203,14 @@ string wholeProcess(string input) {
             if (final == -1) return "Invalid Input! No Digit Detected!\n";
             else return "Invalid Input! Multiple Digits Detected!\n";
         }
-        
+        //Check if its a negative number
+        if (convertingDigit[0] == '-') {
+            isNegative = true;
+            convertingDigit.erase(convertingDigit.begin());
+            
+        }
+
+
         //Removes any leading zeros i.e. 0001 becomes 1.
         if (convertingDigit[0] == '0') {
             convertingDigit = removeLeadingZeros(convertingDigit);

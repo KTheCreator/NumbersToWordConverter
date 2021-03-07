@@ -15,6 +15,7 @@ unordered_map<int, string>numberToWordMap = {
           {20,"Twenty"},{30,"Thirty"},{40,"Forty"},{50,"Fifty"},{60,"Sixty"},{70,"Seventy"},{80,"Eighty"},{90,"Ninety"}
 
 };
+bool isNegative = false;
 vector<string> tokenise(string uInput);
 bool validCommaPos(string x);
 bool isNumber(string x);
